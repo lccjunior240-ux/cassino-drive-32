@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cassino Drive 32 - Mobilidade Urbana</title>
+
+    <!-- CAPA PROFISSIONAL PARA COMPARTILHAMENTO NO WHATSAPP (OPEN GRAPH) -->
+    <meta property="og:title" content="🚗 Cassino Drive 32 - Solicite sua Corrida">
+    <meta property="og:description" content="Calculadora oficial de corridas em Rio Grande e Cassino. Tarifa transparente, pagamento via Pix e atendimento direto com o motorista.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:type" content="website">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f7ca00; margin: 0; padding: 15px; color: #111; }
+        .container { max-width: 440px; margin: 0 auto; }
+        
+        .header-card {
+            background: #f7ca00;
+            color: #111;
+            padding: 15px 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header-card h1 { margin: 0; font-size: 26px; font-weight: 900; letter-spacing: -0.5px; text-transform: uppercase; }
+        .header-card h3 { margin: 4px 0 0 0; font-size: 12px; color: #222; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .road-banner {
+            font-size: 14px;
+            margin-top: 6px;
+            letter-spacing: 2px;
+            color: #111;
+            font-weight: bold;
+        }
+
+        .main-card {
+            background: #ffffff;
+            padding: 20px 15px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border: 2px solid #111;
+        }
+
+        .driver-info {
+            background: #fff9d6;
+            border-left: 4px solid #f7ca00;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #222;
+        }
+        .driver-info p { margin: 3px 0; }
+        
+        .pix-box {
+            background: #f9f9f9;
+            border: 1px dashed #bbb;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .pix-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pix-key-text {
+            font-family: monospace;
+            background: #eee;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            word-break: break-all;
+            color: #000;
+            font-weight: bold;
+        }
+        .btn-copiar {
+            background-color: #f7ca00;
+            color: #111;
+            border: none;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-copiar:hover { background-color: #e5ba00; }
+
+        h3.section-title { color: #111; text-align: center; margin-top: 0; margin-bottom: 15px; font-size: 18px; font-weight: 800; }
+        label { font-weight: bold; display: block; margin-top: 12px; font-size: 13px; color: #333; }
+        input { width: 100%; padding: 12px; margin-top: 6px; background: #f8f8f8; border: 1px solid #ccc; color: #111; border-radius: 8px; font-size: 14px; }
+        input:focus { outline: none; border-color: #f7ca00; background: #fff; }
+        
+        .btn-gps { background-color: #222222; color: #ffffff; border: none; padding: 10px; font-size: 12px; border-radius: 8px; cursor: pointer; margin-top: 8px; width: 100%; font-weight: bold; }
+        .btn-gps:hover { background-color: #000000; }
+        
+        button.calc { width: 100%; background-color: #111111; color: #f7ca00; border: none; padding: 16px; font-size: 16px; font-weight: 800; border-radius: 10px; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        button.calc:hover { background-color: #000000; }
+        
+        .result { margin-top: 18px; background: #fff9d6; border: 2px solid #f7ca00; padding: 14px; border-radius: 10px; font-size: 16px; text-align: center; font-weight: bold; color: #111; display: none; }
+        
+        .btn-confirmar-whats { 
+            width: 100%; 
+            background-color: #25d366; 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            font-size: 15px; 
+            font-weight: 800; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            margin-top: 12px; 
+            text-transform: uppercase; 
+            display: none; 
+        }
+        .btn-confirmar-whats:hover { background-color: #1ebe5d; }
+
+        .map-buttons { display: flex; margin-top: 12px; display: none; }
+        .btn-mapa { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; color: #000; cursor: pointer; font-size: 13px; text-align: center; text-decoration: none; background-color: #33ccff; }
+
+        .rules-info { font-size: 11px; color: #666; margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 8px; line-height: 1.5; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="header-card">
+        <h1>Cassino Drive 32</h1>
+        <h3>Mobilidade Urbana • Rio Grande - RS</h3>
+        <div class="road-banner">🚗 ═══ 🛣️ ═══ 🚗</div>
+    </div>
+
+    <div class="main-card">
+        
+        <div class="driver-info">
+            <p>👤 <b>Motorista:</b> Luiz Carlos Costa Jr.</p>
+            <p>🚗 <b>Veículo:</b> VW Voyage 1.0 | Placa: <b>IQD8060</b></p>
+            <div class="pix-box">
+                <div class="pix-row">
+                    <span>🔑 <b>Chave Pix (Banco Inter):</b></span>
+                    <button class="btn-copiar" onclick="copiarPix()">Copiar Chave</button>
+                </div>
+                <div class="pix-key-text" id="txtPix">45bd89b5-9dd7-4cda-8715-789257d06596</div>
+            </div>
+        </div>
+
+        <h3 class="section-title">Calculadora de Corrida</h3>
+
+        <label for="cliente">Seu Nome:</label>
+        <input type="text" id="cliente" placeholder="Ex: Maria Silva">
+
+        <label for="telefone">Seu WhatsApp / Telefone:</label>
+        <input type="text" id="telefone" placeholder="Ex: (53) 99999-9999">
+
+        <label for="origem">Endereço de Origem (Onde você está):</label>
+        <input type="text" id="origem" placeholder="Ex: Rua Ijuí, Cassino">
+        <button type="button" class="btn-gps" onclick="usarGPS()">📍 Usar minha localização por GPS</button>
+
+        <label for="destino">Endereço de Destino:</label>
+        <input type="text" id="destino" placeholder="Ex: Supermercado Peruzzo">
+
+        <button type="button" class="calc" onclick="calcularRota()">Calcular e Conferir Rota</button>
+
+        <div class="result" id="resultado"></div>
+        
+        <button type="button" class="btn-confirmar-whats" id="btnConfirmar" onclick="enviarParaWhatsApp()">✅ Pix Feito / Enviar Chamada no Whats</button>
+
+        <div class="map-buttons" id="botoesMapa">
+            <a id="linkWaze" href="#" target="_blank" class="btn-mapa">🚗 Abrir Rota no Waze</a>
+        </div>
+
+        <div class="rules-info">
+            • Taxa Mínima da Corrida: R$ 7,99<br>
+            • Km Rodado: R$ 2,50<br>
+            • Localização restrita a Rio Grande / Cassino - RS
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let dadosCorridaGlobal = {};
+
+    function copiarPix() {
+        let chavePix = "45bd89b5-9dd7-4cda-8715-789257d06596";
+        navigator.clipboard.writeText(chavePix).then(() => {
+            alert("Chave Pix do Banco Inter copiada com sucesso!");
+        }).catch(() => {
+            alert("Erro ao copiar chave Pix.");
+        });
+    }
+
+    function usarGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data && data.display_name) {
+                            document.getElementById('origem').value = data.display_name;
+                        } else {
+                            document.getElementById('origem').value = `Minha Posição GPS (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+                        }
+                    })
+                    .catch(() => {
+                        document.getElementById('origem').value = `Minha Posição GPS (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+                    });
+            }, function(error) {
+                alert('Não foi possível obter a localização. Verifique as permissões do seu GPS.');
+            });
+        } else {
+            alert('Geolocalização não suportada no seu navegador.');
+        }
+    }
+
+    async function calcularRota() {
+        let cliente = document.getElementById('cliente').value || "Passageiro";
+        let telefone = document.getElementById('telefone').value || "Não informado";
+        let origemStr = document.getElementById('origem').value;
+        let destinoStr = document.getElementById('destino').value;
+        let resultadoDiv = document.getElementById('resultado');
+
+        if(!origemStr || !destinoStr) {
+            alert('Por favor, informe a origem e o destino.');
+            return;
+        }
+
+        resultadoDiv.style.display = 'block';
+        resultadoDiv.innerText = "Calculando rota...";
+
+        try {
+            let coordsOrigem = await buscarCoordenadasSimples(origemStr);
+            let coordsDestino = await buscarCoordenadasSimples(destinoStr);
+
+            let distanciaKm = calcularDistanciaHaversine(coordsOrigem.lat, coordsOrigem.lon, coordsDestino.lat, coordsDestino.lon) * 1.25;
+            
+            if(distanciaKm < 0.3) {
+                distanciaKm = 2.0; 
+            }
+            
+            distanciaKm = parseFloat(distanciaKm.toFixed(2));
+
+            let calculoKm = distanciaKm * 2.50;
+            let total = calculoKm < 7.99 ? 7.99 : calculoKm;
+
+            resultadoDiv.innerHTML = `📏 Distância: ~${distanciaKm} km<br>💰 <b>Total Estimado: R$ ${total.toFixed(2)}</b><br><span style="font-size:12px; color:#444;">Faça o Pix usando a chave acima e clique em Enviar.</span>`;
+
+            let urlWaze = `https://waze.com/ul?q=${encodeURIComponent(destinoStr)}&navigate=yes`;
+
+            document.getElementById('linkWaze').href = urlWaze;
+            document.getElementById('botoesMapa').style.display = 'flex';
+            document.getElementById('btnConfirmar').style.display = 'block';
+
+            dadosCorridaGlobal = {
+                cliente: cliente,
+                telefone: telefone,
+                origem: origemStr,
+                destino: destinoStr,
+                distancia: distanciaKm,
+                total: total.toFixed(2),
+                urlWaze: urlWaze
+            };
+
+        } catch (error) {
+            let distanciaKm = 3.0;
+            let total = 7.99;
+            resultadoDiv.innerHTML = `📏 Distância: ~${distanciaKm} km<br>💰 <b>Total Estimado: R$ ${total.toFixed(2)}</b>`;
+            
+            let urlWaze = `https://waze.com/ul?q=${encodeURIComponent(destinoStr)}&navigate=yes`;
+            document.getElementById('linkWaze').href = urlWaze;
+            document.getElementById('botoesMapa').style.display = 'flex';
+            document.getElementById('btnConfirmar').style.display = 'block';
+
+            dadosCorridaGlobal = {
+                cliente: cliente,
+                telefone: telefone,
+                origem: origemStr,
+                destino: destinoStr,
+                distancia: distanciaKm,
+                total: total.toFixed(2),
+                urlWaze: urlWaze
+            };
+        }
+    }
+
+    async function buscarCoordenadasSimples(endereco) {
+        let queryBusca = `${endereco}, Rio Grande, RS, Brasil`;
+        try {
+            let res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryBusca)}&limit=1`);
+            let data = await res.json();
+            if(data && data.length > 0) {
+                return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+            }
+        } catch(e) {}
+        
+        return { lat: -32.2033, lon: -52.1611 };
+    }
+
+    function enviarParaWhatsApp() {
+        let d = dadosCorridaGlobal;
+        let mensagem = `*Cassino Drive 32 - Solicitação de Corrida*:%0A` +
+                       `👤 Passageiro: ${d.cliente}%0A` +
+                       `📱 Telefone: ${d.telefone}%0A` +
+                       `📍 De (Passageiro): ${d.origem}%0A` +
+                       `🏁 Para (Destino): ${d.destino}%0A` +
+                       `📏 Distância: ~${d.distancia} km%0A` +
+                       `💰 *Valor (Pago via Pix): R$ ${d.total}*%0A%0A` +
+                       `🚗 *Abrir Rota no Waze:*%0A${d.urlWaze}`;
+
+        let urlWhatsApp = `https://api.whatsapp.com/send?phone=5553999089980&text=${mensagem}`;
+        window.open(urlWhatsApp, '_blank');
+    }
+
+    function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+        let R = 6371;
+        let dLat = deg2rad(lat2 - lat1);
+        let dLon = deg2rad(lon2 - lon1);
+        let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        return R * c;
+    }
+
+    function deg2rad(deg) { return deg * (Math.PI/180); }
+</script>
+
+</body>
+</html>
